@@ -9,7 +9,7 @@ class ScaleAnimatedCarousel extends StatefulWidget {
   final IndexedWidgetBuilder builder;
   final PageController pageController;
   final int itemCount;
-  final Color dotColor;
+  final Color dotColor, indicatorColor;
 
   const ScaleAnimatedCarousel(
       {Key key,
@@ -74,24 +74,39 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
                 left: MediaQuery.of(context).size.width / 2 -
                     ((widget.dotHeight * widget.itemCount) / 2) -
                     ((widget.dotGap * widget.itemCount - 1) / 2),
-                child: Row(
-                  children: List.generate(
-                    widget.itemCount,
-                    (int i) {
-                      return Container(
-                        width: widget.dotHeight,
+                child: Stack(
+                  children: <Widget>[
+                    Row(
+                      children: List.generate(
+                        widget.itemCount + 1,
+                            (int i) {
+                          return Container(
+                            width: widget.dotHeight,
+                            height: widget.dotHeight,
+                            margin: EdgeInsets.only(
+                              right:
+                              i == widget.itemCount ? 0.0 : widget.dotGap,
+                            ),
+                            decoration: BoxDecoration(
+                              color: widget.dotColor ?? Color(0xFFDDDDDD),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      left: carouselPage * (widget.dotHeight + widget.dotGap),
+                      child: Container(
                         height: widget.dotHeight,
-                        margin: EdgeInsets.only(
-                          right:
-                              i == widget.itemCount - 1 ? 0.0 : widget.dotGap,
-                        ),
+                        width: widget.dotHeight * 2 + widget.dotGap,
                         decoration: BoxDecoration(
-                          color: widget.dotColor ?? Color(0xFFDDDDDD),
+                          color: widget.indicatorColor ?? Color(0xFF3ebc93),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               )
             ],
