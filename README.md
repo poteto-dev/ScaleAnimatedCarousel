@@ -1,6 +1,6 @@
 # slide_animated_carousel
 
-`https://pub.dev/packages/slide_animated_carousel`
+[Pub Link (https://pub.dev/packages/slide_animated_carousel)](https://pub.dev/packages/slide_animated_carousel)
 
 ## How to use
 ```yaml
