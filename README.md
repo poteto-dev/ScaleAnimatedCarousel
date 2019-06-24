@@ -12,3 +12,7 @@ multiple Flutter or Dart projects.
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
+
+## How to use
+slide_animated_carousel:
+  git: https://github.com/poteto-dev/ScaleAnimatedCarousel.git
