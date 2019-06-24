@@ -14,5 +14,7 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 ## How to use
+```yaml
 slide_animated_carousel:
   git: https://github.com/poteto-dev/ScaleAnimatedCarousel.git
+```
