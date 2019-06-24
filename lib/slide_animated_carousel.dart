@@ -11,6 +11,9 @@ class ScaleAnimatedCarousel extends StatefulWidget {
   final PageController pageController;
   final int itemCount;
   final Color dotColor, indicatorColor;
+  final bool autoplay, loopAutoplay;
+  final Duration autoplaySpeed, slideSpeed;
+  final Curve slideCurve;
 
   const ScaleAnimatedCarousel({Key key,
     this.dotHeight = 8.0,
@@ -21,6 +24,11 @@ class ScaleAnimatedCarousel extends StatefulWidget {
     this.pageController,
     @required this.itemCount,
     this.dotColor,
+    this.autoplay = false,
+    this.loopAutoplay = false,
+    this.autoplaySpeed,
+    this.slideSpeed,
+    this.slideCurve = Curves.ease,
     this.indicatorColor,
     this.aspectRatio = 1.0})
       : super(key: key);
@@ -33,6 +41,43 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
   double carouselPage = 0.0;
   Timer timer;
 
+  void initTimer() {
+    timer = Timer.periodic(
+        widget.autoplaySpeed ?? Duration(milliseconds: 4000), (Timer timer) {
+      bool isLastSlide = widget.pageController.page.ceil() >=
+          widget.itemCount - 1;
+
+      if (widget.loopAutoplay) {
+        widget.pageController.animateToPage(
+            !isLastSlide ? widget.pageController.page.ceil() + 1 : 0,
+            duration: widget.slideSpeed ?? Duration(milliseconds: 300),
+            curve: widget.slideCurve);
+      } else {
+        if (!isLastSlide) {
+          widget.pageController.animateToPage(
+              widget.pageController.page.ceil() + 1,
+              duration: widget.slideSpeed ?? Duration(milliseconds: 300),
+              curve: widget.slideCurve);
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.autoplay) {
+      initTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,16 +87,23 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollUpdateNotification) {
+              timer?.cancel();
               setState(() {
                 carouselPage = widget.pageController.page;
               });
+              initTimer();
             }
           },
+
           child: Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               PageView.builder(
                 controller: widget.pageController,
+                onPageChanged: (int index) {
+                  timer?.cancel();
+                  initTimer();
+                },
                 itemBuilder: (_, i) {
                   double scale = max(
                       0.88,
