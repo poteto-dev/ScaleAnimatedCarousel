@@ -1,6 +1,7 @@
 library slide_animated_carousel;
 
 import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
@@ -11,17 +12,17 @@ class ScaleAnimatedCarousel extends StatefulWidget {
   final int itemCount;
   final Color dotColor, indicatorColor;
 
-  const ScaleAnimatedCarousel(
-      {Key key,
-      this.dotHeight = 8.0,
-      this.extraPaddingForDots = 48.0,
-      this.dotGap = 8.0,
-      this.viewport = 0.84,
-      @required this.builder,
-      this.pageController,
-      @required this.itemCount,
-      this.dotColor,
-      this.aspectRatio = 1.0})
+  const ScaleAnimatedCarousel({Key key,
+    this.dotHeight = 8.0,
+    this.extraPaddingForDots = 48.0,
+    this.dotGap = 8.0,
+    this.viewport = 0.84,
+    @required this.builder,
+    this.pageController,
+    @required this.itemCount,
+    this.dotColor,
+    this.indicatorColor,
+    this.aspectRatio = 1.0})
       : super(key: key);
 
   @override
@@ -30,6 +31,7 @@ class ScaleAnimatedCarousel extends StatefulWidget {
 
 class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
   double carouselPage = 0.0;
+  Timer timer;
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,14 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
                   return Transform.scale(
                     scale: scale,
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width / 2,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2,
                       child: widget.builder(_, i),
                     ),
                   );
@@ -71,7 +79,10 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
                 bottom: -widget.dotHeight -
                     (widget.extraPaddingForDots / 2) +
                     (widget.dotHeight / 2),
-                left: MediaQuery.of(context).size.width / 2 -
+                left: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 2 -
                     ((widget.dotHeight * widget.itemCount) / 2) -
                     ((widget.dotGap * widget.itemCount - 1) / 2),
                 child: Stack(
