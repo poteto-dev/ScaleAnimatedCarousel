@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 class ScaleAnimatedCarousel extends StatefulWidget {
-  final double dotHeight, extraPaddingForDots, dotGap, viewport;
+  final double dotHeight, extraPaddingForDots, dotGap, viewport, aspectRatio;
   final IndexedWidgetBuilder builder;
   final PageController pageController;
   final int itemCount;
@@ -20,7 +20,8 @@ class ScaleAnimatedCarousel extends StatefulWidget {
       @required this.builder,
       this.pageController,
       @required this.itemCount,
-      this.dotColor})
+      this.dotColor,
+      this.aspectRatio = 1.0})
       : super(key: key);
 
   @override
@@ -35,7 +36,7 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
     return Container(
       margin: EdgeInsets.only(top: 32.0, bottom: widget.extraPaddingForDots),
       child: AspectRatio(
-        aspectRatio: 480 / 160,
+        aspectRatio: widget.aspectRatio,
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollUpdateNotification) {
