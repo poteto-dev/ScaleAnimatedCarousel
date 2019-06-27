@@ -1,8 +1,9 @@
 name: slide_animated_carousel
 description: A new Flutter project.
 version: 0.0.1
-author:
-homepage:
+authors:
+  - Mochamad Lucky Pradana <ampersanda.clj@icloud.com>
+homepage: https://github.com/poteto-dev/ScaleAnimatedCarousel
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

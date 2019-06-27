@@ -99,6 +99,7 @@ class _ScaleAnimatedCarouselState extends State<ScaleAnimatedCarousel> {
             overflow: Overflow.visible,
             children: <Widget>[
               PageView.builder(
+                physics: BouncingScrollPhysics(),
                 controller: widget.pageController,
                 onPageChanged: (int index) {
                   timer?.cancel();
